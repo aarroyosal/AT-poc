@@ -9,7 +9,7 @@ jobs:
         with:
           command: manifest
           monorepo-tags: true
-      - run: echo "releases created: ${{ steps.tag-release.releases_created }}"
+      - run: echo "releases created -  ${{ steps.tag-release.releases_created }}"
         if: ${{ steps.tag-release.releases_created }}
       - name: publish-bq
         if: ${{ steps.release.outputs['clouds/bigquery--release_created'] }}
