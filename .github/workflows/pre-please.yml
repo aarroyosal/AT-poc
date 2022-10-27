@@ -8,4 +8,3 @@ jobs:
         with:
           monorepo-tags: true
           command: manifest-pr
-          default-branch: stable
