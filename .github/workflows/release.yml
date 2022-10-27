@@ -11,17 +11,17 @@ jobs:
           monorepo-tags: true
       - run: echo "${{ steps.tag-release.outputs }}"
       - name: publish-bq
-        if: ${{ steps.release.outputs['clouds/bigquery--bq'] }}
-        run: echo "publish bigquery"
+        if: ${{ steps.release.outputs['clouds/bigquery--release_created'] }}
+        run: echo "publish bigquery tag ${{ steps.release.outputs['clouds/bigquery--tag_name'] }}"
       - name: publish-db
-        if: ${{ steps.release.outputs['clouds/databricks--db'] }}
-        run: echo "publish databricks"
+        if: ${{ steps.release.outputs['clouds/databricks--release_created'] }}
+        run: echo "publish databricks tag ${{ steps.release.outputs['clouds/databricks--tag_name'] }}"
       - name: publish-pg
-        if: ${{ steps.release.outputs['clouds/postgres--pg'] }}
-        run: echo "publish postgres"
+        if: ${{ steps.release.outputs['clouds/postgres--release_created'] }}
+        run: echo "publish postgres tag ${{ steps.release.outputs['clouds/postgres--tag_name'] }}"
       - name: publish-rs
-        if: ${{ steps.release.outputs['clouds/redshift--rs'] }}
-        run: echo "publish redshift"
+        if: ${{ steps.release.outputs['clouds/redshift--release_created'] }}
+        run: echo "publish redshift tag ${{ steps.release.outputs['clouds/redshift--tag_name'] }}"
       - name: publish-sf
-        if: ${{ steps.release.outputs['clouds/snowflake--sf'] }}
-        run: echo "publish snowflake"
+        if: ${{ steps.release.outputs['clouds/snowflake--release_created'] }}
+        run: echo "publish snowflake tag ${{ steps.release.outputs['clouds/snowflake--tag_name'] }}"
