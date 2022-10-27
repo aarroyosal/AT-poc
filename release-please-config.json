@@ -2,31 +2,31 @@
   "packages": {
     "clouds/bigquery": {
       "release-type": "simple",
-      "version-file": "version",
+      "version-file": "version.txt",
       "changelog-path": "CHANGELOG.md",
       "component": "bq"
     },
     "clouds/databricks": {
       "release-type": "simple",
-      "version-file": "version",
+      "version-file": "version.txt",
       "changelog-path": "CHANGELOG.md",
       "component": "db"
     },
     "clouds/postgres": {
       "release-type": "simple",
-      "version-file": "version",
+      "version-file": "version.txt",
       "changelog-path": "CHANGELOG.md",
       "component": "pg"
     },
     "clouds/redshift": {
       "release-type": "simple",
-      "version-file": "version",
+      "version-file": "version.txt",
       "changelog-path": "CHANGELOG.md",
       "component": "rs"
     },
     "clouds/snowflake": {
       "release-type": "simple",
-      "version-file": "version",
+      "version-file": "version.txt",
       "changelog-path": "CHANGELOG.md",
       "component": "sf"
     }
