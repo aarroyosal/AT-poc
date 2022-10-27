@@ -8,8 +8,9 @@ jobs:
         id: pre-release
         with:
           command: manifest-pr
-      - run: echo "releases created -  ${{ steps.pre-release.releases_created }}"
-        if: ${{ steps.pre-release.releases_created }}
+      - run: echo "${{ steps.pre-release.outputs.releases_created }}"
+      - run: echo "releases created - ${{ steps.pre-release.outputs.releases_created }}"
+        if: ${{ steps.pre-release.outputs.releases_created }}
       - name: deploy-bq
         if: ${{ steps.pre-release.outputs['clouds/bigquery--release_created'] }}
         run: echo "deploy bigquery tag ${{ steps.pre-release.outputs['clouds/bigquery--tag_name'] }}"
