@@ -8,3 +8,19 @@ jobs:
         id: pre-release
         with:
           command: manifest-pr
+      - run: echo "${{ steps.pre-release.outputs }}"
+      - name: deploy-bq
+        if: ${{ steps.pre-release.outputs.releases_created }}
+        run: echo "deploy bigquery"
+      - name: deploy-db
+        if: ${{ steps.pre-release.outputs.releases_created }}
+        run: echo "deploy databricks"
+      - name: deploy-pg
+        if: ${{ steps.pre-release.outputs.releases_created }}
+        run: echo "deploy postgres"
+      - name: deploy-rs
+        if: ${{ steps.pre-release.outputs.releases_created }}
+        run: echo "deploy redshift"
+      - name: deploy-sf
+        if: ${{ steps.pre-release.outputs.releases_created }}
+        run: echo "deploy snowflake"

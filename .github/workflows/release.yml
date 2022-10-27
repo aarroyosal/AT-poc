@@ -5,7 +5,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: google-github-actions/release-please-action@v3
-        id: release
+        id: tag-release
         with:
           command: manifest
           monorepo-tags: true
+      - run: echo "${{ steps.tag-release.outputs }}"
+      - name: publish-bq
+        if: ${{ steps.tag-release.outputs.releases_created }}
+        run: echo "publish bigquery"
+      - name: publish-db
+        if: ${{ steps.tag-release.outputs.releases_created }}
+        run: echo "publish databricks"
+      - name: publish-pg
+        if: ${{ steps.tag-release.outputs.releases_created }}
+        run: echo "publish postgres"
+      - name: publish-rs
+        if: ${{ steps.tag-release.outputs.releases_created }}
+        run: echo "publish redshift"
+      - name: publish-sf
+        if: ${{ steps.tag-release.outputs.releases_created }}
+        run: echo "publish snowflake"
