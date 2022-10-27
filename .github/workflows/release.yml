@@ -7,4 +7,4 @@ jobs:
       - uses: google-github-actions/release-please-action@v3
         with:
           monorepo-tags: true
-          command: manifest-release
+          command: github-release
