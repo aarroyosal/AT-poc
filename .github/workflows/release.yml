@@ -11,17 +11,17 @@ jobs:
           monorepo-tags: true
       - run: echo "${{ steps.tag-release.outputs }}"
       - name: publish-bq
-        if: ${{ steps.tag-release.outputs.releases_created }}
+        if: ${{ steps.release.outputs['clouds/bigquery--bq'] }}
         run: echo "publish bigquery"
       - name: publish-db
-        if: ${{ steps.tag-release.outputs.releases_created }}
+        if: ${{ steps.release.outputs['clouds/databricks--db'] }}
         run: echo "publish databricks"
       - name: publish-pg
-        if: ${{ steps.tag-release.outputs.releases_created }}
+        if: ${{ steps.release.outputs['clouds/postgres--pg'] }}
         run: echo "publish postgres"
       - name: publish-rs
-        if: ${{ steps.tag-release.outputs.releases_created }}
+        if: ${{ steps.release.outputs['clouds/redshift--rs'] }}
         run: echo "publish redshift"
       - name: publish-sf
-        if: ${{ steps.tag-release.outputs.releases_created }}
+        if: ${{ steps.release.outputs['clouds/snowflake--sf'] }}
         run: echo "publish snowflake"
