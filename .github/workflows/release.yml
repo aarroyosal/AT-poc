@@ -8,3 +8,4 @@ jobs:
         id: release
         with:
           command: manifest
+          monorepo-tags: true
