@@ -3,5 +3,5 @@
     "clouds/databricks": "0.1.0",
     "clouds/postgres": "1.0.0",
     "clouds/redshift": "1.0.1",
-    "clouds/snowflake": "1.1.0"
+    "clouds/snowflake": "1.2.0"
 }

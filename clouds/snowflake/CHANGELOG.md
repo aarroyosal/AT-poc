@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/aarroyosal/AT-poc/compare/v1.1.0...v1.2.0) (2022-10-27)
+
+
+### Features
+
+* **tiler:** add tiler feature ([74f4c88](https://github.com/aarroyosal/AT-poc/commit/74f4c88b8a7770c5f9d61599bcbd262ba5006139))
+
 ## [1.1.0](https://github.com/aarroyosal/AT-poc/compare/v1.0.0...v1.1.0) (2022-10-27)
 
 
