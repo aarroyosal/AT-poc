@@ -9,8 +9,9 @@ jobs:
         with:
           command: manifest
           monorepo-tags: true
-      - run: echo "releases created -  ${{ steps.tag-release.releases_created }}"
-        if: ${{ steps.tag-release.releases_created }}
+      - run: echo "${{ steps.tag-release.outputs.releases_created }}"      
+      - run: echo "releases created -  ${{ steps.tag-release.outputs.releases_created }}"
+        if: ${{ steps.tag-release.outputs.releases_created }}
       - name: publish-bq
         if: ${{ steps.tag-release.outputs['clouds/bigquery--release_created'] }}
         run: echo "publish bigquery tag ${{ steps.tag-release.outputs['clouds/bigquery--tag_name'] }}"
@@ -25,4 +26,4 @@ jobs:
         run: echo "publish redshift tag ${{ steps.tag-release.outputs['clouds/redshift--tag_name'] }}"
       - name: publish-sf
         if: ${{ steps.tag-release.outputs['clouds/snowflake--release_created'] }}
-        run: echo "publish snowflake tag ${{ steps.reltag-releaseease.outputs['clouds/snowflake--tag_name'] }}"
+        run: echo "publish snowflake tag ${{ steps.tag-release.outputs['clouds/snowflake--tag_name'] }}"
