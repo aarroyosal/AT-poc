@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/aarroyosal/AT-poc/compare/db-v0.2.0...db-v0.2.1) (2022-10-27)
+
+
+### Bug Fixes
+
+* db fix a ([#18](https://github.com/aarroyosal/AT-poc/issues/18)) ([3352b92](https://github.com/aarroyosal/AT-poc/commit/3352b925e7545bd52a62367e9a856469162e7594))
+
 ## [0.2.0](https://github.com/aarroyosal/AT-poc/compare/db-v0.1.1...db-v0.2.0) (2022-10-27)
 
 
