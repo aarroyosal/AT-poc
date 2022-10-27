@@ -1,6 +1,7 @@
-push:
-  branches:
-    - stable
+on: 
+  push:
+    branches:
+      - master
 name: release
 jobs:
   release-please:
