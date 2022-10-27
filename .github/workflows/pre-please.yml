@@ -8,14 +8,20 @@ jobs:
         id: pre-release
         with:
           command: manifest-pr
-      - run: echo "${{ steps.pre-release.outputs }}"
+      - run: echo "releases created -  ${{ steps.tag-release.releases_created }}"
+        if: ${{ steps.tag-release.releases_created }}
       - name: deploy-bq
-        run: echo "deploy bigquery"
+        if: ${{ steps.release.outputs['clouds/bigquery--release_created'] }}
+        run: echo "deploy bigquery tag ${{ steps.release.outputs['clouds/bigquery--tag_name'] }}"
       - name: deploy-db
-        run: echo "deploy databricks"
+        if: ${{ steps.release.outputs['clouds/databricks--release_created'] }}
+        run: echo "deploy databricks tag ${{ steps.release.outputs['clouds/databricks--tag_name'] }}"
       - name: deploy-pg
-        run: echo "deploy postgres"
+        if: ${{ steps.release.outputs['clouds/postgres--release_created'] }}
+        run: echo "deploy postgres tag ${{ steps.release.outputs['clouds/postgres--tag_name'] }}"
       - name: deploy-rs
-        run: echo "deploy redshift"
+        if: ${{ steps.release.outputs['clouds/redshift--release_created'] }}
+        run: echo "deploy redshift tag ${{ steps.release.outputs['clouds/redshift--tag_name'] }}"
       - name: deploy-sf
-        run: echo "deploy snowflake"
+        if: ${{ steps.release.outputs['clouds/snowflake--release_created'] }}
+        run: echo "deploy snowflake tag ${{ steps.release.outputs['clouds/snowflake--tag_name'] }}"
