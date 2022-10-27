@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/aarroyosal/AT-poc/compare/bq-v1.2.0...bq-v2.0.0) (2022-10-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* refactor libraries (#16)
+
+### Code Refactoring
+
+* refactor libraries ([#16](https://github.com/aarroyosal/AT-poc/issues/16)) ([ecdd7ff](https://github.com/aarroyosal/AT-poc/commit/ecdd7ff5f10a5c3bc83eec7b488dacf45852ac96))
+
 ## [1.2.0](https://github.com/aarroyosal/AT-poc/compare/bq-v1.1.0...bq-v1.2.0) (2022-10-27)
 
 
