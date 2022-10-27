@@ -1,7 +1,7 @@
 {
     "clouds/bigquery": "1.2.0",
-    "clouds/databricks": "0.1.1",
-    "clouds/postgres": "1.0.0",
+    "clouds/databricks": "0.2.0",
+    "clouds/postgres": "1.1.0",
     "clouds/redshift": "1.0.2",
     "clouds/snowflake": "1.3.0"
 }
