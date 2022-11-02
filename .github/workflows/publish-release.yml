@@ -37,21 +37,21 @@ jobs:
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
-    - uses: dorny/paths-filter@v2
-      id: changes
-      with:
-        filters: |
-          bigquery:
-            - 'clouds/bigquery/**'
-          databricks:
-            - 'clouds/databricks/**'
-          postgres:
-            - 'clouds/postgres/**'
-          redshift:
-            - 'clouds/redshift/**'
-          snowflake:
-            - 'clouds/snowflake/**'
-        base: stable
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            bigquery:
+              - 'clouds/bigquery/**'
+            databricks:
+              - 'clouds/databricks/**'
+            postgres:
+              - 'clouds/postgres/**'
+            redshift:
+              - 'clouds/redshift/**'
+            snowflake:
+              - 'clouds/snowflake/**'
+          base: stable
       - run: echo "${{ env.RELEASE_VERSION }}"      
       - name: publish-bq
         if: steps.changes.outputs.bigquery == 'true'
