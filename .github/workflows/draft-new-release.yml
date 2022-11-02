@@ -41,15 +41,15 @@ jobs:
         with:
           filters: |
             bigquery:
-              - 'clouds/bigquery/**'
+              - 'clouds/bigquery/version'
             databricks:
-              - 'clouds/databricks/**'
+              - 'clouds/databricks/version'
             postgres:
-              - 'clouds/postgres/**'
+              - 'clouds/postgres/version'
             redshift:
-              - 'clouds/redshift/**'
+              - 'clouds/redshift/version'
             snowflake:
-              - 'clouds/snowflake/**'
+              - 'clouds/snowflake/version'
           base: stable
       - name: Push new branch
         run: git push origin release/${{ github.event.inputs.version }}

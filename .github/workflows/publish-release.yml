@@ -11,6 +11,12 @@ jobs:
   release:
     name: Publish new release
     runs-on: ubuntu-latest
+    outputs:
+      change_bq: ${{ steps.changes.outputs.bigquery }}
+      change_db: ${{ steps.changes.outputs.databricks }}
+      change_pg: ${{ steps.changes.outputs.postgres }}
+      change_rs: ${{ steps.changes.outputs.redshift }}
+      change_sf: ${{ steps.changes.outputs.snowflake }}
     # only merged pull requests that begin with 'release/' or 'hotfix/' must trigger this job
     if: github.event.pull_request.merged == true &&
       (startsWith(github.event.pull_request.head.ref, 'release/') || startsWith(github.event.pull_request.head.ref, 'hotfix/'))
@@ -42,33 +48,16 @@ jobs:
         with:
           filters: |
             bigquery:
-              - 'clouds/bigquery/**'
+              - 'clouds/bigquery/version'
             databricks:
-              - 'clouds/databricks/**'
+              - 'clouds/databricks/version'
             postgres:
-              - 'clouds/postgres/**'
+              - 'clouds/postgres/version'
             redshift:
-              - 'clouds/redshift/**'
+              - 'clouds/redshift/version'
             snowflake:
-              - 'clouds/snowflake/**'
+              - 'clouds/snowflake/version'
           base: stable
-      - run: echo "${{ env.RELEASE_VERSION }}"      
-      - name: publish-bq
-        if: steps.changes.outputs.bigquery == 'true'
-        run: echo "publish bigquery tag ${{ env.RELEASE_VERSION }}"
-      - name: publish-db
-        if: steps.changes.outputs.databricks == 'true'
-        run: echo "publish databricks tag ${{ env.RELEASE_VERSION }}"
-      - name: publish-pg
-        if: steps.changes.outputs.postgres == 'true'
-        run: echo "publish postgres tag ${{ env.RELEASE_VERSION }}"
-      - name: publish-rs
-        if: steps.changes.outputs.redshift == 'true'
-        run: echo "publish redshift tag ${{ env.RELEASE_VERSION }}"
-      - name: publish-sf
-        if: steps.changes.outputs.snowflake == 'true'
-        run: echo "publish snowflake tag ${{ env.RELEASE_VERSION }}"
-
       - name: Merge master into dev branch
         uses: thomaseizinger/create-pull-request@1.2.2
         env:
@@ -82,3 +71,64 @@ jobs:
             This happens to ensure that the updates that happend on the release branch, i.e. CHANGELOG and manifest updates are also present on the dev branch.
       # if needed, you can checkout the latest master here, build artifacts and publish / deploy them somewhere
       # the create-release action has an output `upload_url` output that you can use to upload assets
+
+
+  publish-bq:
+    needs: release
+    if: needs.release.outputs.change_bq == 'true'
+    name: "Publish AT for BigQuery"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: deploy-bq
+        run: |
+          BQ_VERSION=$(cat clouds/bigquery/version)
+          echo "publish bigquery version ${BQ_VERSION}"
+
+  publish-db:
+    needs: release
+    if: needs.release.outputs.change_db == 'true'
+    name: "Publish AT for Databricks"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: deploy-db
+        run: |
+          DB_VERSION=$(cat clouds/databricks/version)
+          echo "publish databricks version ${DB_VERSION}"
+
+  publish-pg:
+    needs: release
+    if: needs.release.outputs.change_pg == 'true'
+    name: "Publish AT for Postgres"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: deploy-pg
+        run: |
+          PG_VERSION=$(cat clouds/postgres/version)
+          echo "publish postgres version ${PG_VERSION}"
+
+  publish-rs:
+    needs: release
+    if: needs.release.outputs.change_rs == 'true'
+    name: "Publish AT for Redshift"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: deploy-rs
+        run: |
+          RS_VERSION=$(cat clouds/redshift/version)
+          echo "publish redshift version ${RS_VERSION}"
+
+  publish-sf:
+    needs: release
+    if: needs.release.outputs.change_sf == 'true'
+    name: "Publish AT for Snowflake"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: deploy-sf
+        run: |
+          SF_VERSION=$(cat clouds/snowflake/version)
+          echo "publish snowflake version ${SF_VERSION}}"
