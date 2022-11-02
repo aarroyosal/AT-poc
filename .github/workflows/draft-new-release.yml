@@ -28,12 +28,12 @@ jobs:
       #   new_branch: release/${{ github.event.inputs.version }}
 
       - name: Create pull request
-        uses: thomaseizinger/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          head: release/${{ github.event.inputs.version }}
-          base: master
+          base: release/${{ github.event.inputs.version }}
+          branch: master
           title: Release version ${{ github.event.inputs.version }}
           reviewers: ${{ github.actor }} # By default, we request a review from the person who triggered the workflow.
           # Write a nice message to the user.
