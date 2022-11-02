@@ -79,7 +79,7 @@ jobs:
     steps:
       - name: deploy-bq
         run: |
-          BQ_VERSION="${{cat clouds/bigquery/version}}""
+          BQ_VERSION=$(cat clouds/bigquery/version)
           echo "deploy bigquery tag ${BQ_VERSION}"
 
   deploy-db:
