@@ -42,7 +42,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Merge master into dev branch
-        uses: thomaseizinger/create-pull-request@v4
+        uses: thomaseizinger/create-pull-request@1.2.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
