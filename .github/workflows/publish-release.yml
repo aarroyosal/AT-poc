@@ -29,15 +29,17 @@ jobs:
           VERSION=${BRANCH_NAME#hotfix/}
           echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
       - name: Create Release
-        uses: thomaseizinger/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
         with:
-          target_commitish: ${{ github.event.pull_request.merge_commit_sha }}
-          tag_name: ${{ env.RELEASE_VERSION }}
+          commit: ${{ github.event.pull_request.merge_commit_sha }}
+          tag: ${{ env.RELEASE_VERSION }}
           name: ${{ env.RELEASE_VERSION }}
           draft: false
           prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Merge master into dev branch
         uses: thomaseizinger/create-pull-request@v4
