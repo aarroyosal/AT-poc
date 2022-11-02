@@ -29,9 +29,6 @@ jobs:
           VERSION=${BRANCH_NAME#hotfix/}
           echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
       - name: Create Release
-        uses: softprops/action-gh-release@v1
-
-      - name: Create Release
         uses: ncipollo/release-action@v1
         with:
           commit: ${{ github.event.pull_request.merge_commit_sha }}
