@@ -73,7 +73,7 @@ jobs:
 
   deploy-bq:
     needs: draft-new-release
-    if: draft-new-release.outputs.change_bq == 'true'
+    if: jobs.draft-new-release.outputs.change_bq == 'true'
     name: "Deploy AT for BigQuery"
     runs-on: ubuntu-latest
     steps:
@@ -84,7 +84,7 @@ jobs:
 
   deploy-db:
     needs: draft-new-release
-    if: draft-new-release.outputs.change_db == 'true'
+    if: jobs.draft-new-release.outputs.change_db == 'true'
     name: "Deploy AT for Databricks"
     runs-on: ubuntu-latest
     steps:
@@ -95,7 +95,7 @@ jobs:
 
   deploy-pg:
     needs: draft-new-release
-    if: draft-new-release.outputs.change_pg == 'true'
+    if: jobs.draft-new-release.outputs.change_pg == 'true'
     name: "Deploy AT for Postgres"
     runs-on: ubuntu-latest
     steps:
@@ -106,7 +106,7 @@ jobs:
 
   deploy-rs:
     needs: draft-new-release
-    if: draft-new-release.outputs.change_rs == 'true'
+    if: jobs.draft-new-release.outputs.change_rs == 'true'
     name: "Deploy AT for Redshift"
     runs-on: ubuntu-latest
     steps:
@@ -117,7 +117,7 @@ jobs:
 
   deploy-sf:
     needs: draft-new-release
-    if: draft-new-release.outputs.change_sf == 'true'
+    if: jobs.draft-new-release.outputs.change_sf == 'true'
     name: "Deploy AT for Snowflake"
     runs-on: ubuntu-latest
     steps:
