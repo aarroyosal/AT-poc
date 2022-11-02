@@ -32,8 +32,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          base: release/${{ github.event.inputs.version }}
-          branch: stable
+          base: stable
+          branch: release/${{ github.event.inputs.version }}
           title: Release version ${{ github.event.inputs.version }}
           reviewers: ${{ github.actor }} # By default, we request a review from the person who triggered the workflow.
           # Write a nice message to the user.
