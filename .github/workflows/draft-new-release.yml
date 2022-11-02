@@ -30,9 +30,39 @@ jobs:
       #   uses: EndBug/add-and-commit@v9
       #   new_branch: release/${{ github.event.inputs.version }}
 
+    - uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        filters: |
+          bigquery:
+            - 'clouds/bigquery/**'
+          databricks:
+            - 'clouds/databricks/**'
+          postgres:
+            - 'clouds/postgres/**'
+          redshift:
+            - 'clouds/redshift/**'
+          snowflake:
+            - 'clouds/snowflake/**'
+        base: stable
+      - name: deploy-bq
+        if: steps.changes.outputs.bigquery == 'true'
+        run: echo "deploy bigquery tag ${{ github.event.inputs.version }}"
+      - name: deploy-db
+        if: steps.changes.outputs.databricks == 'true'
+        run: echo "deploy databricks tag ${{ github.event.inputs.version }}"
+      - name: deploy-pg
+        if: steps.changes.outputs.postgres == 'true'
+        run: echo "deploy postgres tag ${{ github.event.inputs.version }}"
+      - name: deploy-rs
+        if: steps.changes.outputs.redshift == 'true'
+        run: echo "deploy redshift tag ${{ github.event.inputs.version }}"
+      - name: deploy-sf
+        if: steps.changes.outputs.snowflake == 'true'
+        run: echo "deploy snowflake tag ${{ github.event.inputs.version }}"
+
       - name: Push new branch
         run: git push origin release/${{ github.event.inputs.version }}
-
       - name: Create pull request
         uses: thomaseizinger/create-pull-request@1.2.2
         env:
