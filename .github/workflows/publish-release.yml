@@ -37,6 +37,37 @@ jobs:
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            bigquery:
+              - 'clouds/bigquery/**'
+            databricks:
+              - 'clouds/databricks/**'
+            postgres:
+              - 'clouds/postgres/**'
+            redshift:
+              - 'clouds/redshift/**'
+            snowflake:
+              - 'clouds/snowflake/**'
+          base: stable
+      - run: echo "${{ env.RELEASE_VERSION }}"      
+      - name: publish-bq
+        if: steps.changes.outputs.bigquery == 'true'
+        run: echo "publish bigquery tag ${{ env.RELEASE_VERSION }}"
+      - name: publish-db
+        if: steps.changes.outputs.databricks == 'true'
+        run: echo "publish databricks tag ${{ env.RELEASE_VERSION }}"
+      - name: publish-pg
+        if: steps.changes.outputs.postgres == 'true'
+        run: echo "publish postgres tag ${{ env.RELEASE_VERSION }}"
+      - name: publish-rs
+        if: steps.changes.outputs.redshift == 'true'
+        run: echo "publish redshift tag ${{ env.RELEASE_VERSION }}"
+      - name: publish-sf
+        if: steps.changes.outputs.snowflake == 'true'
+        run: echo "publish snowflake tag ${{ env.RELEASE_VERSION }}"
 
       - name: Merge master into dev branch
         uses: thomaseizinger/create-pull-request@1.2.2
