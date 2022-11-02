@@ -79,8 +79,8 @@ jobs:
     steps:
       - name: deploy-bq
         run: |
-        BQ_VERSION="${{cat clouds/bigquery/version}}""
-        echo "deploy bigquery tag ${BQ_VERSION}"
+          BQ_VERSION="${{cat clouds/bigquery/version}}""
+          echo "deploy bigquery tag ${BQ_VERSION}"
 
   deploy-db:
     needs: draft-new-release
@@ -90,8 +90,8 @@ jobs:
     steps:
       - name: deploy-db
         run: |
-        DB_VERSION=$(cat clouds/databricks/version)
-        echo "deploy databricks tag ${DB_VERSION}"
+          DB_VERSION=$(cat clouds/databricks/version)
+          echo "deploy databricks tag ${DB_VERSION}"
 
   deploy-pg:
     needs: draft-new-release
@@ -101,8 +101,8 @@ jobs:
     steps:
       - name: deploy-pg
         run: |
-        PG_VERSION=$(cat clouds/postgres/version)
-        echo "deploy postgres tag ${PG_VERSION}"
+          PG_VERSION=$(cat clouds/postgres/version)
+          echo "deploy postgres tag ${PG_VERSION}"
 
   deploy-rs:
     needs: draft-new-release
@@ -112,8 +112,8 @@ jobs:
     steps:
       - name: deploy-rs
         run: |
-        RS_VERSION=$(cat clouds/redshift/version)
-        echo "deploy redshift tag ${RS_VERSION}"
+          RS_VERSION=$(cat clouds/redshift/version)
+          echo "deploy redshift tag ${RS_VERSION}"
 
   deploy-sf:
     needs: draft-new-release
@@ -123,8 +123,8 @@ jobs:
     steps:
       - name: deploy-sf
         run: |
-        SF_VERSION=$(cat clouds/snowflake/version)
-        echo "deploy snowflake tag ${SF_VERSION}}"
+          SF_VERSION=$(cat clouds/snowflake/version)
+          echo "deploy snowflake tag ${SF_VERSION}}"
 
 
 
