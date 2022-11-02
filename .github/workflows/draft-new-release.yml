@@ -32,14 +32,14 @@ jobs:
 
       - name: Push new branch
         run: git push origin release/${{ github.event.inputs.version }}
-        
+
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v4
+        uses: thomaseizinger/create-pull-request@1.2.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          base: stable
-          branch: release/${{ github.event.inputs.version }}
+          head: release/${{ github.event.inputs.version }}
+          base: master
           title: Release version ${{ github.event.inputs.version }}
           reviewers: ${{ github.actor }} # By default, we request a review from the person who triggered the workflow.
           # Write a nice message to the user.
