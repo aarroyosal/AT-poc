@@ -24,3 +24,9 @@
     - Publish the packages **At this point the complete changelog (AT + ATC) could be created but for this, the ATC has to be released before the AT release starts. This might be done manually by joining the 2 changelogs**
     - Launch workflow to update documentation (this could generate a PR that updates the documentation with the new reference)
     - Remove dedicated AT
+
+
+
+# Issues
+ Big problem found when features are pushed into main branch after after the PR is created this is because 
+ T∫his may be fixed by initiating the process after the tag is created
