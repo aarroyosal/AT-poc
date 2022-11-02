@@ -11,6 +11,12 @@ jobs:
   draft-new-release:
     name: "Draft a new release"
     runs-on: ubuntu-latest
+    outputs:
+      change_bq: ${{ steps.changes.outputs.bigquery }}
+      change_db: ${{ steps.changes.outputs.databricks }}
+      change_pg: ${{ steps.changes.outputs.postgres }}
+      change_rs: ${{ steps.changes.outputs.redshift }}
+      change_sf: ${{ steps.changes.outputs.snowflake }}
     steps:
       - uses: actions/checkout@v3
       
@@ -45,22 +51,6 @@ jobs:
             snowflake:
               - 'clouds/snowflake/**'
           base: stable
-      - name: deploy-bq
-        if: steps.changes.outputs.bigquery == 'true'
-        run: echo "deploy bigquery tag ${{ github.event.inputs.version }}"
-      - name: deploy-db
-        if: steps.changes.outputs.databricks == 'true'
-        run: echo "deploy databricks tag ${{ github.event.inputs.version }}"
-      - name: deploy-pg
-        if: steps.changes.outputs.postgres == 'true'
-        run: echo "deploy postgres tag ${{ github.event.inputs.version }}"
-      - name: deploy-rs
-        if: steps.changes.outputs.redshift == 'true'
-        run: echo "deploy redshift tag ${{ github.event.inputs.version }}"
-      - name: deploy-sf
-        if: steps.changes.outputs.snowflake == 'true'
-        run: echo "deploy snowflake tag ${{ github.event.inputs.version }}"
-
       - name: Push new branch
         run: git push origin release/${{ github.event.inputs.version }}
       - name: Create pull request
@@ -80,3 +70,61 @@ jobs:
             This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
             I've updated the changelog and bumped the versions in the txt files in this commit: ${{ steps.make-commit.outputs.commit }}.
             Merging this PR will create a GitHub release and upload any assets that are created as part of the release build.
+
+  deploy-bq:
+    needs: draft-new-release
+    if: draft-new-release.outputs.change_bq == 'true'
+    needs: test  
+    name: "Deploy AT for BigQuery"
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy-bq
+        BQ_VERSION=$(cat clouds/bigquery/version)
+        run: echo "deploy bigquery tag ${BQ_VERSION}"
+
+  deploy-db:
+    needs: draft-new-release
+    if: draft-new-release.outputs.change_db == 'true'
+    needs: test  
+    name: "Deploy AT for Databricks"
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy-db
+        DB_VERSION=$(cat clouds/databricks/version)      
+        run: echo "deploy databricks tag ${DB_VERSION}"
+
+  deploy-pg:
+    needs: draft-new-release
+    if: draft-new-release.outputs.change_pg == 'true'
+    needs: test  
+    name: "Deploy AT for Postgres"
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy-pg
+        PG_VERSION=$(cat clouds/postgres/version)
+        run: echo "deploy postgres tag ${PG_VERSION}"
+
+  deploy-rs:
+    needs: draft-new-release
+    if: draft-new-release.outputs.change_rs == 'true'
+    needs: test  
+    name: "Deploy AT for Redshift"
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy-rs
+        RS_VERSION=$(cat clouds/redshift/version)
+        run: echo "deploy redshift tag ${RS_VERSION}"
+
+  deploy-sf:
+    needs: draft-new-release
+    if: draft-new-release.outputs.change_sf == 'true'
+    needs: test  
+    name: "Deploy AT for Snowflake"
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy-sf
+        SF_VERSION=$(cat clouds/snowflake/version)
+        run: echo "deploy snowflake tag ${SF_VERSION}}"
+
+
+
