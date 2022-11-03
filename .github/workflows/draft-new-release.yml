@@ -68,8 +68,8 @@ jobs:
           body: |
             Hi @${{ github.actor }}!
             This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
-            I've updated the changelog and bumped the versions in the txt files in this commit: ${{ steps.make-commit.outputs.commit }}.
-            Merging this PR will create a GitHub release and upload any assets that are created as part of the release build.
+            Please, check that the version files and changelogs are correct.
+            Merging this PR will create a GitHub release and publish the AT libraries for the DW whose versions have been updated
 
   deploy-bq:
     needs: draft-new-release
