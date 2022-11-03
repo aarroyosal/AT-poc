@@ -6,7 +6,7 @@ With the release, all the changes of the main branch will be pushed to the stabl
 ## Between releases
 - PR names with conventional commits format (in case we use them in the future)
 - The changelog for each DW must be edited to add the new changes. The new changes will be added to the top section under the header`## [X.Y.Z] (yyyy-MM)` and with the keep a changelog format
-- The version file has to be updated with the changes, The version X.Y.Z will depend on the previous version and the new changes. For instance if previous version was 1.0.0 and only fixes has been added since last release, the new version will be 1.0.1, but if some features have been added, then the new version will be 1.1.0. To check the last released version you can see the changelog, for more info about semantiv versioning go to [this link](https://semver.org/)
+- The version file has to be updated with the changes, The version X.Y.Z will depend on the previous version and the new changes. For instance if previous version was 1.0.0 and only fixes has been added since last release, the new version will be 1.0.1, but if some features have been added, then the new version will be 1.1.0. To check the last released version you can see the changelog. For more info about semantiv versioning go to [this link](https://semver.org/)
 
 
 ## Start release workflow
