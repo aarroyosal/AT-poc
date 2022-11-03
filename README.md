@@ -5,15 +5,14 @@ With the release, all the changes of the main branch will be pushed to the stabl
 
 ## Between releases
 - PR names with conventional commits format (in case we use them in the future)
-- The changelog for wach DW must be edited to add the new changes. The new changes will be added to the top section `## [Unreleased]` with the keep a changelog format
-- The version file has to be updated with the changes, The version X.Y.Z will depend on the previous version and the new changes. For instance if previous version was 1.0.0 and only fixes has been added since last release, the new version will be 1.0.1, but if some features have been added, then the new version will be 1.1.0. To check the last released version you can see the changelog
+- The changelog for each DW must be edited to add the new changes. The new changes will be added to the top section under the header`## [X.Y.Z] (yyyy-MM)` and with the keep a changelog format
+- The version file has to be updated with the changes, The version X.Y.Z will depend on the previous version and the new changes. For instance if previous version was 1.0.0 and only fixes has been added since last release, the new version will be 1.0.1, but if some features have been added, then the new version will be 1.1.0. To check the last released version you can see the changelog, for more info about semantiv versioning go to [this link](https://semver.org/)
 
 
 ## Start release workflow
 - Go to Draft new release gh workflow in AT and manually launch it passing the version with the format yyyy-MM, for example, 2022-11. 
     - This workflow will create a PR from a release branch into stable branch
     - This workflow will deploy new versions to dedicated as well
-    - Update changelog file manually in the release branch. In the changelog, update the section `## [Unreleased]` to `## [X.Y.Z] (yyyy-MM)`.
 - Do the same step in ATC (this wf will not include the deploy to dedicated since it is not necessary there)
 ## QA
 - 3-4 days for QA testing
