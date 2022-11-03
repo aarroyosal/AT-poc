@@ -39,6 +39,6 @@ The hotfix workflows will be managed manually. following the next steps:
 
 # Next steps.
 - Generate changelog dinamically based on commit messages. This can be done with this action https://github.com/marketplace/actions/release-changelog-builder and the help of an autolabeller like this https://github.com/marketplace/actions/labeler
-- Define the order in of releases AT/ATC
-- Develop and call workflow to update the docs
 - Check that the tag doesn't exist before starting the workflow
+- Generate release body with DW versions
+- Automatically merge the pull request from stable to main
