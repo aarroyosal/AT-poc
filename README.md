@@ -14,6 +14,7 @@ With the release, all the changes of the main branch will be pushed to the stabl
     - This workflow will create a PR from a release branch into stable branch
     - This workflow will deploy new versions to dedicated as well
     - Update changelog file manually in the release branch. In the changelog, update the section `## [Unreleased]` to `## [X.Y.Z] (yyyy-MM)`.
+- Do the same step in ATC (this wf will not include the deploy to dedicated since it is not necessary there)
 ## QA
 - 3-4 days for QA testing
     - If some bug raises during QA it can be fixed in this branch 
@@ -24,8 +25,8 @@ With the release, all the changes of the main branch will be pushed to the stabl
     - Publish the artifacts of the DW that have been updated 
     - Create a PR from stable to main branch
     - Launch workflow to update documentation (this could generate a PR that updates the documentation with the new reference)
-- Merge the PR from stable to main (AT finished)
-- Run the draft new release workflow in ATC, and merge it (this wf will not include the deploy to dedicated since it is not necessary there)
+- Merge the PR from stable to main (ATC finished)
+- Merge the PR from stable to main and, if needed, update the ATC submodule (AT finished)
 - Run release workflow in ATC. This will:
     - Create a tag with all the new versions 
     - Publish the core packages
@@ -40,3 +41,4 @@ The hotfix workflows will be managed manually. following the next steps:
 - Generate changelog dinamically based on commit messages. This can be done with this action https://github.com/marketplace/actions/release-changelog-builder and the help of an autolabeller like this https://github.com/marketplace/actions/labeler
 - Define the order in of releases AT/ATC
 - Develop and call workflow to update the docs
+- Check that the tag doesn't exist before starting the workflow
