@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+
+## [1.0.2] (2022-11-03)
+
+
+### Bug Fixes
+
+* fix b
+
 ## [2.0.0](https://github.com/aarroyosal/AT-poc/compare/bq-v1.2.0...bq-v2.0.0) (2022-10-27)
 
 
