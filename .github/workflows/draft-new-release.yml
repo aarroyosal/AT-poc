@@ -9,6 +9,7 @@ on:
 
 jobs:
   draft-new-release:
+    uses: CartoDB/analytics-toolbox/.github/workflows/bigquery-ded.yml@main
     name: "Draft a new release"
     runs-on: ubuntu-latest
     outputs:
