@@ -10,6 +10,7 @@ jobs:
   dedicated:
     runs-on: ubuntu-20.04
     steps:
+      - uses: actions/checkout@v3
       - name: deploy-bq
         run: |
           BQ_VERSION=$(cat clouds/bigquery/version)
