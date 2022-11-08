@@ -1,0 +1,18 @@
+name: Bigquery dedicated env
+
+on:
+  pull_request:
+    types: [closed, unlabeled, labeled, synchronize]
+  workflow_call:  
+
+jobs:
+
+  dedicated:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: deploy-bq
+        run: |
+          BQ_VERSION=$(cat clouds/bigquery/version)
+          echo "deploy bigquery tag ${BQ_VERSION}"
+          echo ${{ github.event }}
+          echo ${{ github.event_name }}
