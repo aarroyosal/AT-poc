@@ -10,7 +10,7 @@ jobs:
   dedicated:
     runs-on: ubuntu-20.04
     env:
-      BQ_PREFIX: dedicated_${{ fromJSON('{"pull_request":"github.event.pull_request.number","workflow_dispatch":"github.event.inputs.version"}')[github.event.action] }}_
+      BQ_PREFIX: dedicated_${{ fromJSON('{"pull_request":"github.event.pull_request.number","workflow_dispatch":"github.event.inputs.version"}')[github.event.event_name] }}_
     steps:
       - uses: actions/checkout@v3
       - name: deploy-bq
@@ -18,5 +18,6 @@ jobs:
           BQ_VERSION=$(cat clouds/bigquery/version)
           echo "deploy bigquery tag ${BQ_VERSION}"
           echo ${{ github.event }}
+          echo ${{ github.event.action }}
           echo ${{ github.event_name }}
           echo "deploy bigquery prefix ${BQ_PREFIX}"
