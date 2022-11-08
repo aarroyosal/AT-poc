@@ -76,9 +76,6 @@ jobs:
     needs: draft-new-release
     if: needs.draft-new-release.outputs.change_bq == 'true'
     name: "Deploy AT for BigQuery"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
   deploy-db:
     needs: draft-new-release
