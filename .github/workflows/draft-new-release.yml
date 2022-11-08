@@ -72,7 +72,7 @@ jobs:
             Merging this PR will create a GitHub release and publish the AT libraries for the DW whose versions have been updated
 
   deploy-bq:
-    uses: CartoDB/analytics-toolbox/.github/workflows/bigquery-ded.yml@main
+    uses: aarroyosal/AT-poc/.github/workflows/bigquery-ded.yml@main
     needs: draft-new-release
     if: needs.draft-new-release.outputs.change_bq == 'true'
     name: "Deploy AT for BigQuery"
