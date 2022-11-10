@@ -6,13 +6,17 @@ on:
   workflow_call:  
 
 jobs:
-
   dedicated:
-    runs-on: ubuntu-20.04
-    env:
-      BQ_PREFIX: dedicated_${{ fromJSON('{"pull_request":"github.event.pull_request.number","workflow_dispatch":"$( github.event.inputs.version )"}')[github.event_name] }}_
+    runs-on: ubuntu-20.04     
     steps:
       - uses: actions/checkout@v3
+      - name: declare variables
+        run: |
+          if [ ${{ github.event_name }} = "workflow_dispatch"]; then
+            "BQ_PREFIX=dedicated_release_${{ github.event.inputs.version }}_" >> $GITHUB_ENV
+          else
+            "BQ_PREFIX=dedicated_${{ github.event.pull_request.number }}_" >> $GITHUB_ENV
+          fi
       - name: deploy-bq
         run: |
           BQ_VERSION=$(cat clouds/bigquery/version)
