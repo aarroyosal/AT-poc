@@ -13,9 +13,9 @@ jobs:
       - name: declare variables
         run: |
           if [[ ${{ github.event_name }} = "workflow_dispatch" ]]; then
-            "BQ_PREFIX=dedicated_release_${{ github.event.inputs.version }}_" >> $GITHUB_ENV
+            echo "BQ_PREFIX=dedicated_release_${{ github.event.inputs.version }}_" >> $GITHUB_ENV
           else
-            "BQ_PREFIX=dedicated_${{ github.event.pull_request.number }}_" >> $GITHUB_ENV
+            echo "BQ_PREFIX=dedicated_${{ github.event.pull_request.number }}_" >> $GITHUB_ENV
           fi
       - name: deploy-bq
         run: |
