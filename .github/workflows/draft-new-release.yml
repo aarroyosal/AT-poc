@@ -49,6 +49,7 @@ jobs:
         with:
           commit_message: edit changelog versions
           branch: release/${{ github.event.inputs.version }}
+          create_branch: true
       - name: Create pull request
         uses: thomaseizinger/create-pull-request@1.2.2
         env:
