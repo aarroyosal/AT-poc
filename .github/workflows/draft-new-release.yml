@@ -68,7 +68,7 @@ jobs:
       #       Please, check that the version files and changelogs are correct.
       #       Merging this PR will create a GitHub release and publish the AT libraries for the DW whose versions have been updated
       - name: Update bq changelog
-        if: steps.changes.outputs.change_bq == 'true'
+        if: steps.changes.outputs.bigquery == 'true'
         run: |
           BQ_VERSION=$(cat clouds/bigquery/version)                
           echo "deploy bigquery tag ${BQ_VERSION}"
@@ -78,7 +78,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           title: Release version ${{ github.event.inputs.version }}
-          branch: release/${{ github.event.inputs.version }}
+          # branch: release/${{ github.event.inputs.version }}
           base: stable
           reviewers: ${{ github.actor }} 
           body: |
