@@ -1,6 +1,6 @@
 # Changelog
 
-## [version1] version2
+## [Unreleased]
 
 ### Changed
 
