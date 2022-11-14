@@ -25,7 +25,7 @@ jobs:
           fi
       - name: deploy-bq
         run: |
-          echo "deploy bigquery tag ${{ github.event.inputs.bq-version }}"
+          echo "deploy bigquery tag ${{ inputs.bq-version }}"
           echo ${{ github.event }}
           echo ${{ github.event.action }}
           echo ${{ github.event_name }}
