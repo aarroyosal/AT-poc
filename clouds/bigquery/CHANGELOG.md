@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [$BQ_VERSION] 2022-11
 
 ### Changed
 
