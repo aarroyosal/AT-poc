@@ -94,8 +94,6 @@ jobs:
     needs: draft-new-release
     if: needs.draft-new-release.outputs.change_bq == 'true'
     name: "Deploy AT for BigQuery"
-    with:
-      bq_version: 1.5.5
       
   deploy-db:
     needs: draft-new-release
