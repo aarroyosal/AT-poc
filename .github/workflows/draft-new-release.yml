@@ -19,9 +19,6 @@ jobs:
       change_sf: ${{ steps.changes.outputs.snowflake }}
     steps:
       - uses: actions/checkout@v3
-      
-      # - name: Create release branch
-      #   run: git checkout -b release/${{ github.event.inputs.version }}
       - uses: dorny/paths-filter@v2
         id: changes
         with:
@@ -37,14 +34,31 @@ jobs:
             snowflake:
               - 'clouds/snowflake/version'
           base: stable
-      # - name: Push new branch
-      #   run: git push origin release/${{ github.event.inputs.version }}
       - name: Update bq changelog
         if: steps.changes.outputs.bigquery == 'true'
         run: |
-          BQ_VERSION=$(cat clouds/bigquery/version)                
-          echo "deploy bigquery tag ${BQ_VERSION}"
-          sed -i "s/\[Unreleased\]/\[${BQ_VERSION}\] ${{ github.event.inputs.version }}/g" clouds/bigquery/CHANGELOG.md
+          echo "BQ_VERSION=$(cat clouds/bigquery/version)" >> $GITHUB_ENV         
+          sed -i "s/\[Unreleased\]/\[${BQ_VERSION}\] - ${{ github.event.inputs.version }}/g" clouds/bigquery/CHANGELOG.md
+      - name: Update databricks changelog
+        if: steps.changes.outputs.databricks == 'true'
+        run: |
+          echo "DB_VERSION=$(cat clouds/databricks/version)" >> $GITHUB_ENV         
+          sed -i "s/\[Unreleased\]/\[${DB_VERSION}\] - ${{ github.event.inputs.version }}/g" clouds/databricks/CHANGELOG.md
+      - name: Update postgres changelog
+        if: steps.changes.outputs.postgres == 'true'
+        run: |
+          echo "PG_VERSION=$(cat clouds/postgres/version)" >> $GITHUB_ENV         
+          sed -i "s/\[Unreleased\]/\[${PG_VERSION}\] - ${{ github.event.inputs.version }}/g" clouds/postgres/CHANGELOG.md
+      - name: Update redshift changelog
+        if: steps.changes.outputs.redshift == 'true'
+        run: |
+          echo "RS_VERSION=$(cat clouds/redshift/version)" >> $GITHUB_ENV         
+          sed -i "s/\[Unreleased\]/\[${RS_VERSION}\] - ${{ github.event.inputs.version }}/g" clouds/redshift/CHANGELOG.md
+      - name: Update snowflake changelog
+        if: steps.changes.outputs.snowflake == 'true'
+        run: |
+          echo "SF_VERSION=$(cat clouds/snowflake/version)" >> $GITHUB_ENV         
+          sed -i "s/\[Unreleased\]/\[${SF_VERSION}\] - ${{ github.event.inputs.version }}/g" clouds/snowflake/CHANGELOG.md
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: edit changelog versions
@@ -75,6 +89,8 @@ jobs:
     needs: draft-new-release
     if: needs.draft-new-release.outputs.change_bq == 'true'
     name: "Deploy AT for BigQuery"
+    with:
+      bq_version: ${{ env.BQ_VERSION }}
 
   deploy-db:
     needs: draft-new-release

@@ -3,10 +3,15 @@ name: Bigquery dedicated env
 on:
   pull_request:
     types: [closed, unlabeled, labeled, synchronize]
-  workflow_call:  
+  workflow_call:
+    inputs:
+      bq_version:
+        description: 'The version you want to release'
 
 jobs:
   dedicated:
+    if: |
+      github.event_name == 'workflow_dispatch' && github.event.inputs.version != ''
     runs-on: ubuntu-20.04     
     steps:
       - uses: actions/checkout@v3
@@ -19,7 +24,6 @@ jobs:
           fi
       - name: deploy-bq
         run: |
-          BQ_VERSION=$(cat clouds/bigquery/version)
           echo "deploy bigquery tag ${BQ_VERSION}"
           echo ${{ github.event }}
           echo ${{ github.event.action }}
