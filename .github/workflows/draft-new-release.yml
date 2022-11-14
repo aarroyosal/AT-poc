@@ -44,7 +44,7 @@ jobs:
         run: |
           BQ_VERSION=$(cat clouds/bigquery/version)                
           echo "deploy bigquery tag ${BQ_VERSION}"
-          sed -i 's/\[Unreleased\]/\[${BQ_VERSION}\] ${{ github.event.inputs.version }}/g' clouds/bigquery/CHANGELOG.md
+          sed -i 's/\[Unreleased\]/\[$BQ_VERSION\] ${{ github.event.inputs.version }}/g' clouds/bigquery/CHANGELOG.md
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: edit changelog versions
