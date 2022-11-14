@@ -38,7 +38,7 @@ jobs:
         if: steps.changes.outputs.bigquery == 'true'
         run: |
           VERSION=$(cat clouds/bigquery/version)
-          echo "BQ_VERSION=$VERSION" >> $GITHUB_OUTPUT         
+          echo "BQ_VERSION=$VERSION" >> $GITHUB_OUTPUT
           sed -i "s/\[Unreleased\]/\[${VERSION}\] - ${{ github.event.inputs.version }}/g" clouds/bigquery/CHANGELOG.md
       - name: Update databricks changelog
         if: steps.changes.outputs.databricks == 'true'
@@ -95,7 +95,7 @@ jobs:
     if: needs.draft-new-release.outputs.change_bq == 'true'
     name: "Deploy AT for BigQuery"
     with:
-      bq-version: 0.0.1
+      bq-version: needs.draft-new-release.outputs.BQ_VERSION
       
   deploy-db:
     needs: draft-new-release
