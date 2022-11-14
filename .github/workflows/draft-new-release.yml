@@ -90,7 +90,7 @@ jobs:
     if: needs.draft-new-release.outputs.change_bq == 'true'
     name: "Deploy AT for BigQuery"
     with:
-      bq_version: ${{ env.BQ_VERSION }}
+      bq_version: ${{ needs.draft-new-release.env.BQ_VERSION }}
 
   deploy-db:
     needs: draft-new-release
