@@ -41,3 +41,6 @@ The hotfix workflows will be managed manually. following the next steps:
 - Check that the tag doesn't exist before starting the workflow
 - Generate release body with DW versions
 - Automatically merge the pull request from stable to main
+
+
+sed -i .bak -e 's/[Unreleased]/[version1] version2/g' clouds/bigquery/CHANGELOG.md

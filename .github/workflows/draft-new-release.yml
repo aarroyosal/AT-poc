@@ -22,20 +22,6 @@ jobs:
       
       # - name: Create release branch
       #   run: git checkout -b release/${{ github.event.inputs.version }}
-
-      - name: "Build Changelog"
-        uses: mikepenz/release-changelog-builder-action@v3
-        id: github_release
-        with:
-          configuration: "configuration.json"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # This step is only necesary if some files are added/modified
-      # - name: Commit changes
-      #   uses: EndBug/add-and-commit@v9
-      #   new_branch: release/${{ github.event.inputs.version }}
-
       - uses: dorny/paths-filter@v2
         id: changes
         with:
@@ -53,40 +39,31 @@ jobs:
           base: stable
       # - name: Push new branch
       #   run: git push origin release/${{ github.event.inputs.version }}
-      # - name: Create pull request
-      #   uses: thomaseizinger/create-pull-request@1.2.2
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     head: release/${{ github.event.inputs.version }}
-      #     base: stable
-      #     title: Release version ${{ github.event.inputs.version }}
-      #     reviewers: ${{ github.actor }} 
-      #     body: |
-      #       Hi @${{ github.actor }}!
-      #       This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
-      #       Please, check that the version files and changelogs are correct.
-      #       Merging this PR will create a GitHub release and publish the AT libraries for the DW whose versions have been updated
       - name: Update bq changelog
         if: steps.changes.outputs.bigquery == 'true'
         run: |
           BQ_VERSION=$(cat clouds/bigquery/version)                
           echo "deploy bigquery tag ${BQ_VERSION}"
-          sed -i 's/## [Unreleased]/## [${BQ_VERSION}] ${{ github.event.inputs.version }}/' clouds/bigquery/CHANGELOG.md
-          
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
+          sed -i'.bak' 's/\[Unreleased\]/\[${BQ_VERSION}\] ${{ github.event.inputs.version }}/g' clouds/bigquery/CHANGELOG.md
+          rm clouds/bigquery/CHANGELOG.md.bak
+      - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          title: Release version ${{ github.event.inputs.version }}
-          # branch: release/${{ github.event.inputs.version }}
+          commit_message: edit changelog versions
+          branch: release/${{ github.event.inputs.version }}
+      - name: Create pull request
+        uses: thomaseizinger/create-pull-request@1.2.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          head: release/${{ github.event.inputs.version }}
           base: stable
+          title: Release version ${{ github.event.inputs.version }}
           reviewers: ${{ github.actor }} 
           body: |
             Hi @${{ github.actor }}!
             This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
             Please, check that the version files and changelogs are correct.
-            Merging this PR will create a GitHub release and publish the AT libraries for the DW whose versions have been updated          
-
+            Merging this PR will create a GitHub release and publish the AT libraries for the DW whose versions have been updated
 
       - name: Trigger update doc job
         env:
