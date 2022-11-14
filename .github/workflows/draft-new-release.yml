@@ -20,8 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - name: Create release branch
-        run: git checkout -b release/${{ github.event.inputs.version }}
+      # - name: Create release branch
+      #   run: git checkout -b release/${{ github.event.inputs.version }}
 
       - name: "Build Changelog"
         uses: mikepenz/release-changelog-builder-action@v3
@@ -68,7 +68,7 @@ jobs:
       #       Please, check that the version files and changelogs are correct.
       #       Merging this PR will create a GitHub release and publish the AT libraries for the DW whose versions have been updated
       - name: Update bq changelog
-        if: steps.changes.outputs.frontend == 'true'
+        if: steps.changes.outputs.change_bq == 'true'
         run: |
           BQ_VERSION=$(cat clouds/bigquery/version)                
           echo "deploy bigquery tag ${BQ_VERSION}"
