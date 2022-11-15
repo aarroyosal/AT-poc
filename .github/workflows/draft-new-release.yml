@@ -37,27 +37,23 @@ jobs:
       - name: Update bq changelog
         if: steps.changes.outputs.bigquery == 'true'
         run: |
-          VERSION=$(cat clouds/bigquery/version)
-          echo "BQ_VERSION=$VERSION" >> $GITHUB_OUTPUT
-          sed -i "s/\[Unreleased\]/\[${VERSION}\] - ${{ github.event.inputs.version }}/g" clouds/bigquery/CHANGELOG.md
+          BQ_VERSION=$(cat clouds/bigquery/version)
+          sed -i "s/\[Unreleased\]/\[${BQ_VERSION}\] - ${{ github.event.inputs.version }}/g" clouds/bigquery/CHANGELOG.md
       - name: Update databricks changelog
         if: steps.changes.outputs.databricks == 'true'
         run: |
-          VERSION=$(cat clouds/snowflake/version)
-          echo "DB_VERSION=$VERSION" >> $GITHUB_OUTPUT         
-          sed -i "s/\[Unreleased\]/\[${VERSION}\] - ${{ github.event.inputs.version }}/g" clouds/databricks/CHANGELOG.md
+          DB_VERSION=$(cat clouds/snowflake/version)
+          sed -i "s/\[Unreleased\]/\[${DB_VERSION}\] - ${{ github.event.inputs.version }}/g" clouds/databricks/CHANGELOG.md
       - name: Update postgres changelog
         if: steps.changes.outputs.postgres == 'true'
         run: |
-          VERSION=$(cat clouds/snowflake/version)
-          echo "PG_VERSION=$VERSION" >> $GITHUB_OUTPUT         
-          sed -i "s/\[Unreleased\]/\[${VERSION}\] - ${{ github.event.inputs.version }}/g" clouds/postgres/CHANGELOG.md
+          PG_VERSION=$(cat clouds/snowflake/version)
+          sed -i "s/\[Unreleased\]/\[${PG_VERSION}\] - ${{ github.event.inputs.version }}/g" clouds/postgres/CHANGELOG.md
       - name: Update redshift changelog
         if: steps.changes.outputs.redshift == 'true'
         run: |
-          VERSION=$(cat clouds/snowflake/version)
-          echo "RS_VERSION=$VERSION" >> $GITHUB_OUTPUT         
-          sed -i "s/\[Unreleased\]/\[${VERSION}\] - ${{ github.event.inputs.version }}/g" clouds/redshift/CHANGELOG.md
+          RS_VERSION=$(cat clouds/snowflake/version)
+          sed -i "s/\[Unreleased\]/\[${RS_VERSION}\] - ${{ github.event.inputs.version }}/g" clouds/redshift/CHANGELOG.md
       - name: Update snowflake changelog
         if: steps.changes.outputs.snowflake == 'true'
         run: |
@@ -94,8 +90,7 @@ jobs:
     needs: draft-new-release
     if: needs.draft-new-release.outputs.change_bq == 'true'
     name: "Deploy AT for BigQuery"
-    with:
-      bq-version: ${{ needs.draft-new-release.outputs.BQ_VERSION }}
+
       
   deploy-db:
     needs: draft-new-release

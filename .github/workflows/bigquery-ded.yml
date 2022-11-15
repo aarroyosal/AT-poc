@@ -4,10 +4,7 @@ on:
   pull_request:
     types: [closed, unlabeled, labeled, synchronize]
   workflow_call:
-    inputs:
-      bq-version:
-        type: string
-        required: true
+    
 
 jobs:
   dedicated:
