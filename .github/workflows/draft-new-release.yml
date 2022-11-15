@@ -80,7 +80,7 @@ jobs:
             This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
             Please, check that the version files and changelogs are correct.
             Merging this PR will create a GitHub release and publish the AT libraries for the DW whose versions have been updated
-      - name: Add labels to PR:
+      - name: Add labels to PR
         run: |
           if [[ ${{ steps.changes.outputs.bigquery }} = "true" ]]; then
             gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_bigquery
