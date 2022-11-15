@@ -93,13 +93,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         run: gh workflow run -R https://github.com/CartoDB/documentation.git update-doc.yml -f version=new-${{ github.event.inputs.version }}
-
-  deploy-bq:
-    uses: aarroyosal/AT-poc/.github/workflows/bigquery-ded.yml@main
-    needs: draft-new-release
-    if: needs.draft-new-release.outputs.change_bq == 'true'
-    name: "Deploy AT for BigQuery"
-
       
   deploy-db:
     needs: draft-new-release
