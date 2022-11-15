@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.5] - 2022-06
+
+### Changed
+
+- add more stuff
 ## [1.0.4] - 2022-11
 
 ### Changed

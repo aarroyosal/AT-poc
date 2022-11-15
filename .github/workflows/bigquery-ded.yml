@@ -13,19 +13,24 @@ jobs:
     runs-on: ubuntu-20.04     
     steps:
       - uses: actions/checkout@v3
-      - name: declare variables
+      - name: Set BQ_PREFIX for releases
+        if: startsWith(github.event.pull_request.head.ref, 'release/')
         run: |
-          if [[ ${{ github.event.pull_request.head.ref }} = release/* ]]; then
-            BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
-            VERSION=${BRANCH_NAME#release/}
-            echo "BQ_PREFIX=dedicated_release_${VERSION}_" >> $GITHUB_ENV
-          elif [[ ${{ github.event.pull_request.head.ref }} = hotfix/* ]]; then
-            BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
-            VERSION=${BRANCH_NAME#hotfix/}
-            echo "BQ_PREFIX=dedicated_hotfix_${VERSION}_" >> $GITHUB_ENV
-          else
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#release/}
+          echo "BQ_PREFIX=dedicated_release_${VERSION}_" >> $GITHUB_ENV
+      - name: Set BQ_PREFIX for hotfixes
+        if: startsWith(github.event.pull_request.head.ref, 'hotfix/')
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#hotfix/}
+          echo "BQ_PREFIX=dedicated_release_${VERSION}_" >> $GITHUB_ENV
+      - name: Set BQ_PREFIX for the rest
+        if: |
+          !(startsWith(github.event.pull_request.head.ref, 'hotfix/')) &&
+          !(startsWith(github.event.pull_request.head.ref, 'release/'))
+        run: |
             echo "BQ_PREFIX=dedicated_${{ github.event.pull_request.number }}_" >> $GITHUB_ENV
-          fi
       - name: deploy-bq
         run: |
           echo ${{ github.event }}
