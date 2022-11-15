@@ -3,13 +3,13 @@ name: Bigquery dedicated env
 on:
   pull_request:
     types: [closed, unlabeled, labeled, synchronize]
-  workflow_call:
-    
 
 jobs:
   dedicated:
-    if: |
-      github.event_name == 'workflow_dispatch' && github.event.inputs.version != ''
+    if:  |
+      github.event.label.name == 'dedicated_bigquery' ||
+      (github.event.action == 'closed' && contains(github.event.pull_request.labels.*.name, 'dedicated_bigquery')) ||
+      (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'dedicated_bigquery'))
     runs-on: ubuntu-20.04     
     steps:
       - uses: actions/checkout@v3
@@ -22,7 +22,6 @@ jobs:
           fi
       - name: deploy-bq
         run: |
-          echo "deploy bigquery tag ${{ inputs.bq-version }}"
           echo ${{ github.event }}
           echo ${{ github.event.action }}
           echo ${{ github.event_name }}
