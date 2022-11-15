@@ -22,7 +22,7 @@ jobs:
           elif [[ ${{ github.event.pull_request.head.ref }} = hotfix/* ]]; then
             BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
             VERSION=${BRANCH_NAME#hotfix/}
-            echo "BQ_PREFIX=dedicated_release_${VERSION}_" >> $GITHUB_ENV
+            echo "BQ_PREFIX=dedicated_hotfix_${VERSION}_" >> $GITHUB_ENV
           else
             echo "BQ_PREFIX=dedicated_${{ github.event.pull_request.number }}_" >> $GITHUB_ENV
           fi

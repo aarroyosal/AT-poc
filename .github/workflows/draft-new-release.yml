@@ -87,10 +87,18 @@ jobs:
           if [[ ${{ steps.changes.outputs.bigquery }} = "true" ]]; then
             gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_bigquery
           fi
-          gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_databricks
-          gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_postgres
-          gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_redshift
-          gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_snowflake
+          if [[ ${{ steps.changes.outputs.databricks }} = "true" ]]; then
+            gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_databricks
+          fi
+          if [[ ${{ steps.changes.outputs.postgres }} = "true" ]]; then
+            gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_postgres
+          fi
+          if [[ ${{ steps.changes.outputs.redshift }} = "true" ]]; then
+            gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_redshift
+          fi
+          if [[ ${{ steps.changes.outputs.snowflake }} = "true" ]]; then
+            gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_snowflake
+          fi
       - name: Trigger update doc job
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
