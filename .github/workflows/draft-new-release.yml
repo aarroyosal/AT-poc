@@ -82,7 +82,7 @@ jobs:
             Merging this PR will create a GitHub release and publish the AT libraries for the DW whose versions have been updated
       - name: Add labels to PR
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         run: |
           if [[ ${{ steps.changes.outputs.bigquery }} = "true" ]]; then
             gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_bigquery
