@@ -2,7 +2,7 @@ name: Bigquery dedicated env
 
 on:
   pull_request:
-    types: [closed, unlabeled, labeled, synchronize]
+    types: [open, closed, unlabeled, labeled, synchronize]
 
 jobs:
   dedicated:
@@ -15,8 +15,14 @@ jobs:
       - uses: actions/checkout@v3
       - name: declare variables
         run: |
-          if [[ ${{ github.event_name }} = "workflow_dispatch" ]]; then
-            echo "BQ_PREFIX=dedicated_release_${{ github.event.inputs.version }}_" >> $GITHUB_ENV
+          if [[ ${{ github.event.pull_request.head.ref }} = release/* ]]; then
+            BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+            VERSION=${BRANCH_NAME#release/}
+            echo "BQ_PREFIX=dedicated_release_${VERSION}_" >> $GITHUB_ENV
+          elif [[ ${{ github.event.pull_request.head.ref }} = hotfix/* ]]; then
+            BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+            VERSION=${BRANCH_NAME#hotfix/}
+            echo "BQ_PREFIX=dedicated_release_${VERSION}_" >> $GITHUB_ENV
           else
             echo "BQ_PREFIX=dedicated_${{ github.event.pull_request.number }}_" >> $GITHUB_ENV
           fi
