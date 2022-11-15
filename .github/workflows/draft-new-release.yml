@@ -81,6 +81,8 @@ jobs:
             Please, check that the version files and changelogs are correct.
             Merging this PR will create a GitHub release and publish the AT libraries for the DW whose versions have been updated
       - name: Add labels to PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [[ ${{ steps.changes.outputs.bigquery }} = "true" ]]; then
             gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_bigquery
@@ -93,54 +95,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         run: gh workflow run -R https://github.com/CartoDB/documentation.git update-doc.yml -f version=new-${{ github.event.inputs.version }}
-      
-  deploy-db:
-    needs: draft-new-release
-    if: needs.draft-new-release.outputs.change_db == 'true'
-    name: "Deploy AT for Databricks"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: deploy-db
-        run: |
-          DB_VERSION=$(cat clouds/databricks/version)
-          echo "deploy databricks tag ${DB_VERSION}"
-
-  deploy-pg:
-    needs: draft-new-release
-    if: needs.draft-new-release.outputs.change_pg == 'true'
-    name: "Deploy AT for Postgres"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: deploy-pg
-        run: |
-          PG_VERSION=$(cat clouds/postgres/version)
-          echo "deploy postgres tag ${PG_VERSION}"
-
-  deploy-rs:
-    needs: draft-new-release
-    if: needs.draft-new-release.outputs.change_rs == 'true'
-    name: "Deploy AT for Redshift"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: deploy-rs
-        run: |
-          RS_VERSION=$(cat clouds/redshift/version)
-          echo "deploy redshift tag ${RS_VERSION}"
-
-  deploy-sf:
-    needs: draft-new-release
-    if: needs.draft-new-release.outputs.change_sf == 'true'
-    name: "Deploy AT for Snowflake"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: deploy-sf
-        run: |
-          SF_VERSION=$(cat clouds/snowflake/version)
-          echo "deploy snowflake tag ${SF_VERSION}}"
-
-
-
