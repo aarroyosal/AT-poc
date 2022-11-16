@@ -13,13 +13,6 @@ on:
       - "clouds/bigquery/**"
       - "core/clouds/bigquery/**"
       - ".github/workflows/bigquery.yml"
-  workflow_call:
-    inputs:
-      only_publish:
-        type: boolean
-        default: false
-        required: false
-        description: Whether to only publish
 
 env:
   NODE_VERSION: 14
@@ -30,37 +23,33 @@ env:
 
 jobs:
   test:
-    if: github.event.inputs.only_publish == 'false'
     runs-on: ubuntu-20.04
     steps:
       - name: deploy-bq
         run: |
           echo test step
-          echo ${{ github.event.inputs.only_publish }}
 
   deploy-internal:
-    if: github.ref_name == 'main' &&  (!${{ github.event.inputs.only_publish }} || github.event.inputs.only_publish == 'false')
+    if: github.ref_name == 'main'
     needs: test
     runs-on: ubuntu-20.04
     steps:
       - name: deploy-bq
         run: |
           echo internal step
-          echo ${{ github.event.inputs.only_publish }}
   deploy:
-    if: github.ref_name == 'stable' && (!${{ github.event.inputs.only_publish }} || github.event.inputs.only_publish == 'false')
+    if: github.ref_name == 'stable'
     needs: test
     runs-on: ubuntu-20.04
     steps:
       - name: deploy-bq
         run: |
           echo deploy step
-          echo ${{ github.event.inputs.only_publish }}
   publish:
-    if: github.ref_name == 'stable' && github.event.inputs.only_publish == 'true'
+    if: github.ref_name == 'stable'
+    needs: test
     runs-on: ubuntu-20.04
     steps:
       - name: deploy-bq
         run: |
           echo publish step
-          echo ${{ github.event.inputs.only_publish }}
