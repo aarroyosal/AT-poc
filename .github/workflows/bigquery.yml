@@ -1,0 +1,58 @@
+name: Bigquery CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "clouds/bigquery/**"
+      - "core/clouds/bigquery/**"
+      - ".github/workflows/bigquery.yml"
+  pull_request:
+    paths:
+      - "clouds/bigquery/**"
+      - "core/clouds/bigquery/**"
+      - ".github/workflows/bigquery.yml"
+  workflow_dispatch:
+    inputs:
+      only_publish:
+        type: boolean
+        default: false
+        required: false
+        description: Whether to only publish
+
+env:
+  NODE_VERSION: 14
+  EM_VERSION: 2.0.13
+  EM_CACHE_FOLDER: 'emsdk-cache'
+  PYTHON3_VERSION: 3.8.10
+  GCLOUD_VERSION: 290.0.1
+
+jobs:
+  test:
+    if: github.event.inputs.only_publish == 'false'
+    runs-on: ubuntu-20.04
+    steps:
+      - name: deploy-bq
+        run: echo test step
+  deploy-internal:
+    if: github.ref_name == 'main' && github.event.inputs.only_publish == 'false'
+    needs: test
+    runs-on: ubuntu-20.04
+    steps:
+      - name: deploy-bq
+        run: echo deploy internal step
+  deploy:
+    if: github.ref_name == 'stable' && github.event.inputs.only_publish == 'false'
+    needs: test
+    runs-on: ubuntu-20.04
+    steps:
+      - name: deploy-bq
+        run: echo Deploy step
+  publish:
+    if: github.ref_name == 'stable' || github.event.inputs.only_publish == 'true'
+    needs: test
+    runs-on: ubuntu-20.04
+    steps:
+      - name: deploy-bq
+        run: echo Publish step
