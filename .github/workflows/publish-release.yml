@@ -75,7 +75,7 @@ jobs:
     needs: release
     if: needs.release.outputs.change_bq == 'true'
     name: "Publish AT for BigQuery"
-    uses: octo-org/example-repo/.github/workflows/reusable-workflow.yml@main
+    uses: aarroyosal/AT-poc/.github/workflows/bigquery.yml@stable
     with: 
       only_publish: true
 
