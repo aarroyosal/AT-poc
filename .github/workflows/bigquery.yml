@@ -34,25 +34,33 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: deploy-bq
-        run: echo test step
+        run: |
+          echo test step
+          echo ${{ github.event.inputs.only_publish }}
+
   deploy-internal:
-    if: github.ref_name == 'main' && github.event.inputs.only_publish == 'false'
+    if: github.ref_name == 'main' &&  (!${{ github.event.inputs.only_publish }} || github.event.inputs.only_publish == 'false')
     needs: test
     runs-on: ubuntu-20.04
     steps:
       - name: deploy-bq
-        run: echo deploy internal step
+        run: |
+          echo internal step
+          echo ${{ github.event.inputs.only_publish }}
   deploy:
-    if: github.ref_name == 'stable' && github.event.inputs.only_publish == 'false'
+    if: github.ref_name == 'stable' && (!${{ github.event.inputs.only_publish }} || github.event.inputs.only_publish == 'false')
     needs: test
     runs-on: ubuntu-20.04
     steps:
       - name: deploy-bq
-        run: echo Deploy step
+        run: |
+          echo deploy step
+          echo ${{ github.event.inputs.only_publish }}
   publish:
-    if: github.ref_name == 'stable' || github.event.inputs.only_publish == 'true'
-    needs: test
+    if: github.ref_name == 'stable' && github.event.inputs.only_publish == 'true'
     runs-on: ubuntu-20.04
     steps:
       - name: deploy-bq
-        run: echo Publish step
+        run: |
+          echo publish step
+          echo ${{ github.event.inputs.only_publish }}
