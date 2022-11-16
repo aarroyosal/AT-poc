@@ -14,6 +14,7 @@ on:
       - "core/clouds/bigquery/**"
       - ".github/workflows/bigquery.yml"
   workflow_call:
+  workflow_dispatch:
 
 env:
   NODE_VERSION: 14
@@ -52,4 +53,3 @@ jobs:
       - name: deploy-bq
         run: |
           echo publish step
-          echo ${{ github.event.inputs.publish_version }}
