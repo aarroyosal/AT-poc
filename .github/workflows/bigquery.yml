@@ -1,0 +1,55 @@
+name: Bigquery CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "clouds/bigquery/**"
+      - "core/clouds/bigquery/**"
+      - ".github/workflows/bigquery.yml"
+  pull_request:
+    paths:
+      - "clouds/bigquery/**"
+      - "core/clouds/bigquery/**"
+      - ".github/workflows/bigquery.yml"
+  workflow_call:
+
+env:
+  NODE_VERSION: 14
+  EM_VERSION: 2.0.13
+  EM_CACHE_FOLDER: 'emsdk-cache'
+  PYTHON3_VERSION: 3.8.10
+  GCLOUD_VERSION: 290.0.1
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: deploy-bq
+        run: |
+          echo test step
+  deploy-internal:
+    if: github.ref_name == 'main'
+    needs: test
+    runs-on: ubuntu-20.04
+    steps:
+      - name: deploy-bq
+        run: |
+          echo internal step
+  deploy:
+    if: github.ref_name == 'stable'
+    needs: test
+    runs-on: ubuntu-20.04
+    steps:
+      - name: deploy-bq
+        run: |
+          echo deploy step
+  publish:
+    if: github.ref_name == 'stable'
+    runs-on: ubuntu-20.04
+    steps:
+      - name: deploy-bq
+        run: |
+          echo publish step
+          echo ${{ github.event.inputs.publish_version }}

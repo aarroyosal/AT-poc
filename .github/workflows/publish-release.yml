@@ -75,13 +75,10 @@ jobs:
     needs: release
     if: needs.release.outputs.change_bq == 'true'
     name: "Publish AT for BigQuery"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: deploy-bq
-        run: |
-          BQ_VERSION=$(cat clouds/bigquery/version)
-          echo "publish bigquery version ${BQ_VERSION}"
+    uses: aarroyosal/AT-poc/.github/workflows/bigquery.yml@stable
+    with: 
+      only_publish: true
+
 
   publish-db:
     needs: release
