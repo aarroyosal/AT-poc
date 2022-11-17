@@ -61,12 +61,11 @@ jobs:
         uses: repo-sync/pull-request@v2
         id: pull_request
         with:
-          source_branch: "stable"
           destination_branch: "main"
           pr_title: Merge stable into main branch
           pr_body: |
             This PR merges the stable branch back into main.
-            This is done to ensure that the updates that happend on the release branch, i.e. CHANGELOG updates are also present on the main branch.
+            This is done to ensure that the updates that happend on the release branch, e.g. CHANGELOG updates are also present on the main branch.
       - name: Merge PR if possible
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
