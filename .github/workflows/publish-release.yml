@@ -72,8 +72,8 @@ jobs:
           if [[ ${{ steps.changes.outputs.snowflake }} = "true" ]]; then
             RELEASE_BODY+="\n- Snowflake release version $SF_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/snowflake/CHANGELOG.md"
           fi
-          echo "body - $RELEASE_BODY"
-          echo "RELEASE_BODY=$RELEASE_BODY" >> $GITHUB_ENV
+          echo -e "body - $RELEASE_BODY"
+          echo -e "RELEASE_BODY=$RELEASE_BODY" >> $GITHUB_ENV
 
       - name: Create Release
         uses: ncipollo/release-action@v1
