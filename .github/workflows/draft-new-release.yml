@@ -66,17 +66,14 @@ jobs:
           branch: release/${{ github.event.inputs.version }}
           create_branch: true
       - name: Create pull request
-        uses: thomaseizinger/create-pull-request@1.2.2
+        uses: repo-sync/pull-request@v2
         id: pull_request
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          head: release/${{ github.event.inputs.version }}
-          base: stable
-          title: Release version ${{ github.event.inputs.version }}
-          reviewers: ${{ github.actor }} 
-          body: |
-            Hi @${{ github.actor }}!
+          source_branch: release/${{ github.event.inputs.version }}
+          destination_branch: "stable"
+          pr_title: Release version ${{ github.event.inputs.version }}
+          pr_reviewer: ${{ github.actor }} 
+          pr_body: |
             This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
             Please, check that the version files and changelogs are correct.
             Merging this PR will create a GitHub release and publish the AT libraries for the DW whose versions have been updated
@@ -85,19 +82,19 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         run: |
           if [[ ${{ steps.changes.outputs.bigquery }} = "true" ]]; then
-            gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_bigquery
+            gh pr edit ${{steps.pull_request.outputs.pr_number }} --add-label dedicated_bigquery
           fi
           if [[ ${{ steps.changes.outputs.databricks }} = "true" ]]; then
-            gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_databricks
+            gh pr edit ${{steps.pull_request.outputs.pr_number }} --add-label dedicated_databricks
           fi
           if [[ ${{ steps.changes.outputs.postgres }} = "true" ]]; then
-            gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_postgres
+            gh pr edit ${{steps.pull_request.outputs.pr_number }} --add-label dedicated_postgres
           fi
           if [[ ${{ steps.changes.outputs.redshift }} = "true" ]]; then
-            gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_redshift
+            gh pr edit ${{steps.pull_request.outputs.pr_number }} --add-label dedicated_redshift
           fi
           if [[ ${{ steps.changes.outputs.snowflake }} = "true" ]]; then
-            gh pr edit ${{steps.pull_request.outputs.number }} --add-label dedicated_snowflake
+            gh pr edit ${{steps.pull_request.outputs.pr_number }} --add-label dedicated_snowflake
           fi
       - name: Trigger update doc job
         env:

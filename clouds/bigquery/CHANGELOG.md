@@ -1,5 +1,12 @@
 # Changelog
 
+
+## [1.2.0] - 2022-03
+
+### Changed
+
+- add cool stuff
+
 ## [1.1.1] - 2022-04
 
 ### Changed
