@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.0] - 2022-11-08
+
+### Changed
+
+- add nice stuff
+
 ## [1.2.9] - 2022-11-07
 
 ### Changed
