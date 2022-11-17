@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Check if release tag exists
         run: |
-          if [! $(git tag -l "${{ github.event.inputs.version }}") ]; then
+          if [[ !($(git tag -l "${{ github.event.inputs.version }}")) ]]; then
             echo "## Release ${{ github.event.inputs.version }} already exists" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
