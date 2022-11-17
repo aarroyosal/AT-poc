@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Check if release tag exists
         run: |
-          if [[ $(git tag -l "${{ github.event.inputs.version }}") ]]; then
+          if [[ $(git ls-remote --tags origin refs/tags/"${{ github.event.inputs.version }}") ]]; then
             echo "## Release ${{ github.event.inputs.version }} already exists"
             exit 1
           fi
