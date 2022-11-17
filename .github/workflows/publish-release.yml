@@ -34,6 +34,21 @@ jobs:
           BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
           VERSION=${BRANCH_NAME#hotfix/}
           echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            bigquery:
+              - 'clouds/bigquery/version'
+            databricks:
+              - 'clouds/databricks/version'
+            postgres:
+              - 'clouds/postgres/version'
+            redshift:
+              - 'clouds/redshift/version'
+            snowflake:
+              - 'clouds/snowflake/version'
+          base: stable
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
@@ -58,19 +73,22 @@ jobs:
             snowflake:
               - 'clouds/snowflake/version'
           base: stable
-      - name: Create PR from stable into main branch
-        uses: thomaseizinger/create-pull-request@1.2.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create pull request
+        uses: repo-sync/pull-request@v2
+        id: pull_request
         with:
-          head: stable
-          base: main
-          title: Merge master into dev branch
-          body: |
-            This PR merges the master branch back into dev.
-            This happens to ensure that the updates that happend on the release branch, i.e. CHANGELOG and manifest updates are also present on the dev branch.
-
-
+          source_branch: "stable"
+          destination_branch: "main"
+          pr_title: Merge stable into main branch
+          pr_body: |
+            This PR merges the stable branch back into main.
+            This is done to ensure that the updates that happend on the release branch, i.e. CHANGELOG updates are also present on the main branch.
+      - name: Merge PR if possible
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+        run: |
+          gh pr merge ${{steps.pull_request.outputs.pr_number }} --auto --delete-branch --squash --subject "Merge release ${{ env.RELEASE_VERSION }} into main branch"
+      
   publish-bq:
     needs: release
     if: needs.release.outputs.change_bq == 'true'
