@@ -58,19 +58,19 @@ jobs:
           SF_VERSION=$(cat clouds/snowflake/version)
           RELEASE_BODY="# Release version ${{ env.RELEASE_VERSION }}"
           if [[ ${{ steps.changes.outputs.bigquery }} = "true" ]]; then
-            RELEASE_BODY+="- Bigquery release version $BQ_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/bigquery/CHANGELOG.md"
+            RELEASE_BODY+="\n- Bigquery release version $BQ_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/bigquery/CHANGELOG.md"
           fi
           if [[ ${{ steps.changes.outputs.databricks }} = "true" ]]; then
-            RELEASE_BODY+="- Databricks release version $DB_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/databricks/CHANGELOG.md"
+            RELEASE_BODY+="\n- Databricks release version $DB_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/databricks/CHANGELOG.md"
           fi
           if [[ ${{ steps.changes.outputs.postgres }} = "true" ]]; then
-            RELEASE_BODY+="- Postgres release version $PG_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/postgres/CHANGELOG.md"
+            RELEASE_BODY+="\n- Postgres release version $PG_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/postgres/CHANGELOG.md"
           fi
           if [[ ${{ steps.changes.outputs.redshift }} = "true" ]]; then
-            RELEASE_BODY+="- Redshift release version $RS_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/redshift/CHANGELOG.md"
+            RELEASE_BODY+="\n- Redshift release version $RS_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/redshift/CHANGELOG.md"
           fi
           if [[ ${{ steps.changes.outputs.snowflake }} = "true" ]]; then
-            RELEASE_BODY+="- Snowflake release version $SF_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/snowflake/CHANGELOG.md"
+            RELEASE_BODY+="\n- Snowflake release version $SF_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/snowflake/CHANGELOG.md"
           fi
           echo "body - $RELEASE_BODY"
           echo "RELEASE_BODY=$RELEASE_BODY" >> $GITHUB_ENV
