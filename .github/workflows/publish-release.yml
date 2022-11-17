@@ -21,6 +21,7 @@ jobs:
     if: github.event.pull_request.merged == true &&
       (startsWith(github.event.pull_request.head.ref, 'release/') || startsWith(github.event.pull_request.head.ref, 'hotfix/'))
     steps:
+      - uses: actions/checkout@v3
       - name: Extract version from branch name (for release branches)
         if: startsWith(github.event.pull_request.head.ref, 'release/')
         run: |
