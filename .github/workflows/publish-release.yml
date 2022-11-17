@@ -73,7 +73,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         run: |
-          gh pr merge ${{steps.pull_request.outputs.number }} --auto --delete-branch --squash --subject "Merge release ${{ env.RELEASE_VERSION }} into main branch"
+          gh pr merge ${{ steps.pull_request.outputs.number }} --auto --delete-branch --squash --subject "Merge release ${{ env.RELEASE_VERSION }} into main branch"
       
   publish-bq:
     needs: release
