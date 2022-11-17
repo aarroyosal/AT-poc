@@ -48,6 +48,31 @@ jobs:
             snowflake:
               - 'clouds/snowflake/version'
           base: stable
+      - name: Create release body
+        run: |
+          BQ_VERSION=$(cat clouds/bigquery/version)
+          DB_VERSION=$(cat clouds/databricks/version)
+          PG_VERSION=$(cat clouds/postgres/version)
+          RS_VERSION=$(cat clouds/redshift/version)
+          SF_VERSION=$(cat clouds/snowflake/version)
+          RELEASE_BODY = ""
+          if [[ ${{ steps.changes.outputs.bigquery }} = "true" ]]; then
+            RELEASE_BODY += "Bigquery release version $BQ_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/bigquery/CHANGELOG.md"
+          fi
+          if [[ ${{ steps.changes.outputs.databricks }} = "true" ]]; then
+            RELEASE_BODY += "Databricks release version $DB_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/databricks/CHANGELOG.md"
+          fi
+          if [[ ${{ steps.changes.outputs.postgres }} = "true" ]]; then
+            RELEASE_BODY += "Postgres release version $PG_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/postgres/CHANGELOG.md"
+          fi
+          if [[ ${{ steps.changes.outputs.redshift }} = "true" ]]; then
+            RELEASE_BODY += "Redshift release version $RS_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/redshift/CHANGELOG.md"
+          fi
+          if [[ ${{ steps.changes.outputs.snowflake }} = "true" ]]; then
+            RELEASE_BODY += "Snowflake release version $SF_VERSION - https://github.com/${{ github.repository }}/blob/stable/clouds/snowflake/CHANGELOG.md"
+          fi
+          echo "RELEASE_BODY=${RELEASE_BODY}" >> $GITHUB_ENV
+
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
@@ -57,6 +82,7 @@ jobs:
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
+          body: ${{ env.RELEASE_BODY }}
       - name: Create PR from stable into main branch
         uses: thomaseizinger/create-pull-request@1.2.2
         env:
@@ -73,7 +99,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         run: |
-          gh pr merge ${{steps.pull_request.outputs.number }} --auto --delete-branch --squash --subject "Merge release ${{ env.RELEASE_VERSION }} into main branch"
+          gh pr merge ${{ steps.pull_request.outputs.number }} --auto --delete-branch --squash --subject "Merge release ${{ env.RELEASE_VERSION }} into main branch"
       
   publish-bq:
     needs: release
