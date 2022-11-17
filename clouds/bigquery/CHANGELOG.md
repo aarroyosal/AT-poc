@@ -1,7 +1,7 @@
 # Changelog
 
 
-## [Unreleased] - 2022-03
+## [Unreleased]
 
 ### Changed
 
