@@ -12,13 +12,13 @@ jobs:
     name: "Draft a new release"
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Check if release tag exists
         run: |
           if [[ !($(git tag -l "${{ github.event.inputs.version }}")) ]]; then
             echo "## Release ${{ github.event.inputs.version }} already exists" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
-      - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
         id: changes
         with:
