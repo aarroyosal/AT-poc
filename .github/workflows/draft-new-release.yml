@@ -116,15 +116,16 @@ jobs:
         env:
           SLACK_CHANNEL: CT77VDK0X #analytics-toolbox
           SLACK_KEY: ${{ secrets.SLACK_KEY }}
-          PR_URL: ${{ needs.changelog.outputs.pr_url }}
+          PR_URL: ${{ needs.draft-new-release.outputs.pr_url }}
         run: |
           set -eu
           MESSAGE="This is a test message!
           Analytics toolbox Release \`${RELEASE_VERSION}\` is ready to be reviewed, please review and merge the PR:
           - *Status:* :white_check_mark:
           - *<${PR_URL}|Pull Request Analytics toolbox*"
-          curl \
-            -F "text=${MESSAGE}" \
-            -F "channel=${SLACK_CHANNEL}" \
-            -H "Authorization: Bearer ${SLACK_KEY}" \
-            -X POST https://slack.com/api/chat.postMessage
+          echo $MESSAGE
+          # curl \
+          #   -F "text=${MESSAGE}" \
+          #   -F "channel=${SLACK_CHANNEL}" \
+          #   -H "Authorization: Bearer ${SLACK_KEY}" \
+          #   -X POST https://slack.com/api/chat.postMessage
