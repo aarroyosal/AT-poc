@@ -122,7 +122,7 @@ jobs:
           MESSAGE="This is a test message!
           Analytics toolbox Release \`${RELEASE_VERSION}\` is ready to be reviewed, please review and merge the PR:
           - *Status:* :white_check_mark:
-          - *<${PR_CHANGELOG}|Pull Request Analytics toolbox*"
+          - *<${PR_URL}|Pull Request Analytics toolbox*"
           curl \
             -F "text=${MESSAGE}" \
             -F "channel=${SLACK_CHANNEL}" \
