@@ -11,6 +11,8 @@ jobs:
   draft-new-release:
     name: "Draft a new release"
     runs-on: ubuntu-latest
+    outputs:
+      pr_url: ${{ steps.pull_request.outputs.pr_url }}
     steps:
       - uses: actions/checkout@v3
       - name: Check if release tag exists
@@ -101,3 +103,28 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         run: gh workflow run -R https://github.com/CartoDB/documentation.git update-doc.yml -f version=new-${{ github.event.inputs.version }}
+
+  notify-slack:
+    runs-on: ubuntu-20.04
+    name: "Notify Slack"
+    needs:
+      - draft-new-release
+    env:
+      RELEASE_VERSION: ${{ github.event.inputs.version }}
+    steps:
+      - name: Slack notification (#carto-selfhosted)
+        env:
+          SLACK_CHANNEL: CT77VDK0X #analytics-toolbox
+          SLACK_KEY: ${{ secrets.SLACK_KEY }}
+          PR_URL: ${{ needs.changelog.outputs.pr_url }}
+        run: |
+          set -eu
+          MESSAGE="This is a test message!
+          Analytics toolbox Release \`${RELEASE_VERSION}\` is ready to be reviewed, please review and merge the PR:
+          - *Status:* :white_check_mark:
+          - *<${PR_CHANGELOG}|Pull Request Analytics toolbox*"
+          curl \
+            -F "text=${MESSAGE}" \
+            -F "channel=${SLACK_CHANNEL}" \
+            -H "Authorization: Bearer ${SLACK_KEY}" \
+            -X POST https://slack.com/api/chat.postMessage
