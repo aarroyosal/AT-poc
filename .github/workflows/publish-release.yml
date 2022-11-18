@@ -87,15 +87,15 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: ${{ env.RELEASE_BODY }}
       - name: Create PR from stable into main branch
-        uses: thomaseizinger/create-pull-request@1.2.2
+        uses: repo-sync/pull-request@v2
         id: pull_request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          head: stable
-          base: main
-          title: Merge master into dev branch
-          body: |
+          source_branch: stable
+          destination_branch: main
+          pr_title: Merge master into dev branch
+          pr_body: |
             This PR merges the master branch back into dev.
             This happens to ensure that the updates that happend on the release branch, i.e. CHANGELOG and manifest updates are also present on the dev branch.
 
@@ -103,7 +103,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         run: |
-          gh pr merge ${{ steps.pull_request.outputs.number }} --auto --merge
+          gh pr merge ${{ steps.pull_request.outputs.pr_number }} --auto --merge
       
   publish-bq:
     needs: release
