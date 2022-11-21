@@ -63,11 +63,18 @@ jobs:
         run: |
           SF_VERSION=$(cat clouds/snowflake/version)
           sed -i "s/\[Unreleased\]/\[${SF_VERSION}\] - ${{ github.event.inputs.version }}/g" clouds/snowflake/CHANGELOG.md
+      - name: Set git config
+        run: |
+          git config --global user.email supercartofante@cartodb.com
+          git config --global user.name supercartofante
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Edit changelog versions
           branch: release/${{ github.event.inputs.version }}
           create_branch: true
+          commit_user_name: supercartofante
+          commit_user_email: supercartofante@cartodb.com
+          commit_author: supercartofante@cartodb.com
       - name: Create pull request
         uses: repo-sync/pull-request@v2
         id: pull_request
