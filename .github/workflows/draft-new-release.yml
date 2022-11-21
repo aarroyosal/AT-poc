@@ -15,6 +15,8 @@ jobs:
       pr_url: ${{ steps.pull_request.outputs.pr_url }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
       - name: Check if release tag exists
         run: |
           if [[ $(git ls-remote --tags origin refs/tags/"${{ github.event.inputs.version }}") ]]; then
@@ -114,12 +116,12 @@ jobs:
     steps:
       - name: Slack notification (#carto-selfhosted)
         env:
-          SLACK_CHANNEL: CRQT3HKCH #CT77VDK0X - analytics-toolbox
+          SLACK_CHANNEL: CRQT3HKCH #analytics-toolbox
           SLACK_KEY: ${{ secrets.SLACK_KEY }}
           PR_URL: ${{ needs.draft-new-release.outputs.pr_url }}
         run: |
           set -eu
-          MESSAGE="Analytics toolbox Release \`${RELEASE_VERSION}\` is ready to be reviewed, please review and merge the PR:
+          MESSAGE="Analytics toolbox Release \`${RELEASE_VERSION}\` is ready, please review and merge the PR:
           - *Status:* :white_check_mark:
           - *<${PR_URL}|Pull Request Analytics toolbox>*"
           curl \
