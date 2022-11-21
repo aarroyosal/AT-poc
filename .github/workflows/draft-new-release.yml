@@ -11,8 +11,12 @@ jobs:
   draft-new-release:
     name: "Draft a new release"
     runs-on: ubuntu-latest
+    outputs:
+      pr_url: ${{ steps.pull_request.outputs.pr_url }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
       - name: Check if release tag exists
         run: |
           if [[ $(git ls-remote --tags origin refs/tags/"${{ github.event.inputs.version }}") ]]; then
@@ -64,16 +68,15 @@ jobs:
           commit_message: Edit changelog versions
           branch: release/${{ github.event.inputs.version }}
           create_branch: true
+          commit_user_name: Angel Arroyo
+          commit_user_email: aarroyo@cartodb.com
       - name: Create pull request
         uses: repo-sync/pull-request@v2
         id: pull_request
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           source_branch: release/${{ github.event.inputs.version }}
           destination_branch: stable
           pr_title: Release version ${{ github.event.inputs.version }}
-          pr_reviewer: ${{ github.actor }} 
           pr_body: |
             This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
             Please, check that the version files and changelogs are correct.
@@ -101,3 +104,27 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         run: gh workflow run -R https://github.com/CartoDB/documentation.git update-doc.yml -f version=new-${{ github.event.inputs.version }}
+
+  notify-slack:
+    runs-on: ubuntu-20.04
+    name: "Notify Slack"
+    needs:
+      - draft-new-release
+    env:
+      RELEASE_VERSION: ${{ github.event.inputs.version }}
+    steps:
+      - name: Slack notification (#carto-selfhosted)
+        env:
+          SLACK_CHANNEL: CRQT3HKCH #analytics-toolbox
+          SLACK_KEY: ${{ secrets.SLACK_KEY }}
+          PR_URL: ${{ needs.draft-new-release.outputs.pr_url }}
+        run: |
+          set -eu
+          MESSAGE="Analytics toolbox Release \`${RELEASE_VERSION}\` is ready, please review and merge the PR:
+          - *Status:* :white_check_mark:
+          - *<${PR_URL}|Pull Request Analytics toolbox>*"
+          curl \
+            -F "text=${MESSAGE}" \
+            -F "channel=${SLACK_CHANNEL}" \
+            -H "Authorization: Bearer ${SLACK_KEY}" \
+            -X POST https://slack.com/api/chat.postMessage
