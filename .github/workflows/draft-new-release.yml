@@ -68,8 +68,8 @@ jobs:
           commit_message: Edit changelog versions
           branch: release/${{ github.event.inputs.version }}
           create_branch: true
-          commit_user_name: supercartofante
-          commit_user_email: supercartofante@cartodb.com
+          commit_user_name: Angel Arroyo
+          commit_user_email: aarroyo@cartodb.com
       - name: Create pull request
         uses: repo-sync/pull-request@v2
         id: pull_request
