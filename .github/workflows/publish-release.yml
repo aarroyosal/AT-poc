@@ -94,7 +94,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          source_branch: stable
+          source_branch: ${{ github.event.pull_request.head.ref }}
           destination_branch: main
           pr_title: Merge master into dev branch
           pr_body: |
@@ -111,7 +111,7 @@ jobs:
     needs: release
     if: needs.release.outputs.change_bq == 'true'
     name: "Publish AT for BigQuery"
-    uses: aarroyosal/AT-poc/.github/workflows/bigquery.yml@stable
+    uses: aarroyosal/AT-poc/.github/workflows/bigquery.yml@${{ github.event.pull_request.head.ref }}
 
   publish-db:
     needs: release
