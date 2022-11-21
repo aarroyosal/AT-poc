@@ -112,6 +112,7 @@ jobs:
     if: needs.release.outputs.change_bq == 'true'
     name: "Publish AT for BigQuery"
     uses: aarroyosal/AT-poc/.github/workflows/bigquery.yml@stable
+    secrets: inherit
 
   publish-db:
     needs: release

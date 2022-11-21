@@ -23,6 +23,10 @@ jobs:
             echo "## Release ${{ github.event.inputs.version }} already exists"
             exit 1
           fi
+      - name: Step with error
+        continue-on-error: true
+        run: |
+          exit 1
       - uses: dorny/paths-filter@v2
         id: changes
         with:
