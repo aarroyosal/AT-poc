@@ -111,7 +111,7 @@ jobs:
     needs: release
     if: needs.release.outputs.change_bq == 'true'
     name: "Publish AT for BigQuery"
-    uses: aarroyosal/AT-poc/.github/workflows/bigquery.yml@${{ github.event.pull_request.head.ref }}
+    uses: aarroyosal/AT-poc/.github/workflows/bigquery.yml@stable
 
   publish-db:
     needs: release
