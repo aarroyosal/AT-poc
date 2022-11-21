@@ -23,7 +23,7 @@ jobs:
             echo "## Release ${{ github.event.inputs.version }} already exists"
             exit 1
           fi
-      - name: Check if release tag exists
+      - name: Step with error
         continue-on-error: true
         run: |
           exit 1
